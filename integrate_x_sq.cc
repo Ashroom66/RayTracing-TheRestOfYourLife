@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 inline double pdf(double x) {
-    return 0.5;
+    return x*x * 3/8;
 }
 
 inline double f(double x) {
@@ -14,11 +14,12 @@ inline double f(double x) {
 }
 
 int main() {
-    int N = 1000000;
+    int N = 1;
     auto sum = 0.0;
     for (int i=0; i<N; i++) {
-        auto x = random_double(0, 2);                   // 一様乱数。効率悪い
+        // auto x = random_double(0, 2);                // 一様乱数。効率悪い
         // auto x = sqrt(random_double(0, 4));          // 工夫した乱数。一様乱数より効率よくなる(pdfはx/2になる)
+        auto x = pow(random_double(0, 8), 1./3.);       // 正確なサンプリング。pdf = x^2 * 3/8
         while (x==0.0) {x = sqrt(random_double(0, 2));} // (zero divisionを回避)
         sum += f(x) / pdf(x);                           // サンプルされる確率(pdf)で重みづけ
     }
